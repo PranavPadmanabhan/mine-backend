@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const authRouter = require("./routes/Auth");
+const userRouter = require("./routes/users");
 const passport = require("passport");
 const session = require("express-session");
 const cors = require("cors");
@@ -18,7 +19,9 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("MongoDb connection successfull"))
+  .then((db) => {
+    console.log("MongoDb connection successfull");
+  })
   .catch((err) => console.log(err));
 
 app.use(
@@ -43,7 +46,8 @@ app.use(express.json());
 
 app.use(urlencoded({ extended: false }));
 
-app.use("/auth", authRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/", userRouter);
 
 app.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}`)
